@@ -36,7 +36,7 @@ As running the script might lock you out of the raspberry, I commented this like
 
 You might want to put it back.
 
-If in the -k '<publicKey>' you did put the right thing, you should be able to connect
+If in the -k '\<publicKey\>' you did put the right thing, you should be able to connect
 with simply:
 
     ssh mariobros@<usualIP>
