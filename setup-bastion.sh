@@ -146,7 +146,9 @@ ufw status
 # raspi-config command has some dependencies, which should not matter
 # in principle from the user, but for example you cannot run it as root.
 # You need a sudo raspi-config run. I suggest to lock it:
-passwd -l pi
+
+#REMOVEME passwd -l pi
+
 # Then you can do from root: sudo su - pi
 # A ref is: https://www.raspberrypi.org/documentation/configuration/security.md
 # Citing: "... Please note that with the current Raspbian distribution, there are some aspects that require the pi user to be present. If you are unsure whether you will be affected by this, then leave the pi user in place. ..."
