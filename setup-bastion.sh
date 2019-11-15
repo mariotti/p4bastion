@@ -1,5 +1,8 @@
 #! /bin/bash
 #
+# Set defaults and checks.
+# This is useful if you want to include this in a startup script without passing options.
+# Or just if you need it to clone always the same settings.
 user="myme"
 host="mybastion"
 pubkey="fakekey"
