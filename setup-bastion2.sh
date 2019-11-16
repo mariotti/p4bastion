@@ -50,66 +50,30 @@ if [ "a$pubkey" == "afakekey" ]; then
     exit 1
 fi
 #
+. ./basic-functions.sh
 #
 # Make sure you are up to date
-apt -y update && apt -y  upgrade && apt -y autoremove --purge
+fullupgrade
 #
 # This might require reboot: skipping for now
 ## apt-get dist-upgrade
 #
 # Make sure you do not have stale configs
-dpkg -l | grep '^rc' | awk '{print $2;}' | xargs  apt -y purge
+cleanupstale
 #
 # Remove not really needed packages (this list should grow)
 # Maybe we can move this step above to save some time in the upgrade
 # from a relatively old dist on the SD
-# - 1) Some obvious
-apt -y remove libreoffice* wolfram* minecraft-pi sonic-pi scratch nuscratch
-apt -y autoremove --purge
-# - 2) Others
-apt -y remove idle3 smartsim python-minecraftpi python3-minecraftpi bluej nodered claws-mail \
-    claws-mail-i18n python-pygame --purge -y
-apt -y autoremove --purge
-# - 2) Odds
-apt -y remove java-common openjdk-11-jre-headless
-apt -y autoremove --purge
+removeunusedpkg
 #
-# Iterate once more on cleaning after packages removal (needed?)
-apt clean && apt autoremove --purge -y
-apt -y update && apt -y upgrade  && apt -y autoremove --purge
-dpkg -l | grep '^rc' | awk '{print $2;}' | xargs  apt -y purge
-#
-# We need to know some iformation.
-# The hostname:
-#              - default is raspberrypi
-#              - The new name would be what you set on top
+# Iterate once more on cleaning after packages removal
+cleanupstale
 #
 # Set up the hostname
-# /etc/hosts
-cat /etc/hosts > /tmp/x.$$.setup-bastion.hosts
-sed "s/raspberrypi/${host}/" /tmp/x.$$.setup-bastion.hosts > /etc/hosts
-rm /tmp/x.$$.setup-bastion.hosts
-#
-# /etc/hostname
-echo "${host}" > /etc/hostname
+sethostname "${host}"
 #
 # Add the new use 
-# useradd -d /home/"${user}" -m -U -s /bin/false "${user}"
-useradd -d /home/"${user}" -m -U "${user}"
-# Add the new use to most groups (To be updated)
-adduser "${user}" sudo
-adduser "${user}" adm
-adduser "${user}" dialout
-adduser "${user}" cdrom
-adduser "${user}" audio
-adduser "${user}" video
-adduser "${user}" plugdev
-adduser "${user}" users
-adduser "${user}" input
-adduser "${user}" netdev
-adduser "${user}" spi
-adduser "${user}" i2c
-adduser "${user}" gpio
+adduserwithgroups
 #
 if [ ! -d /home/"${user}"/.ssh ]; then
     mkdir /home/"${user}"/.ssh
