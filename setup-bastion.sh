@@ -87,42 +87,42 @@ dpkg -l | grep '^rc' | awk '{print $2;}' | xargs  apt -y purge
 # Set up the hostname
 # /etc/hosts
 cat /etc/hosts > /tmp/x.$$.setup-bastion.hosts
-cat /tmp/x.$$.setup-bastion.hosts | sed "s/raspberrypi/${host}/" > /etc/hosts
+sed "s/raspberrypi/${host}/" /tmp/x.$$.setup-bastion.hosts > /etc/hosts
 rm /tmp/x.$$.setup-bastion.hosts
 #
 # /etc/hostname
 echo "${host}" > /etc/hostname
 #
 # Add the new use 
-# useradd -d /home/${user} -m -U -s /bin/false ${user}
-useradd -d /home/${user} -m -U ${user}
+# useradd -d /home/"${user}" -m -U -s /bin/false "${user}"
+useradd -d /home/"${user}" -m -U "${user}"
 # Add the new use to most groups (To be updated)
-adduser ${user} sudo
-adduser ${user} adm
-adduser ${user} dialout
-adduser ${user} cdrom
-adduser ${user} audio
-adduser ${user} video
-adduser ${user} plugdev
-adduser ${user} users
-adduser ${user} input
-adduser ${user} netdev
-adduser ${user} spi
-adduser ${user} i2c
-adduser ${user} gpio
+adduser "${user}" sudo
+adduser "${user}" adm
+adduser "${user}" dialout
+adduser "${user}" cdrom
+adduser "${user}" audio
+adduser "${user}" video
+adduser "${user}" plugdev
+adduser "${user}" users
+adduser "${user}" input
+adduser "${user}" netdev
+adduser "${user}" spi
+adduser "${user}" i2c
+adduser "${user}" gpio
 #
-if [ ! -d /home/${user}/.ssh ]; then
-    mkdir /home/${user}/.ssh
-    chown ${user}.${user} /home/${user}/.ssh
-    chmod 700 /home/${user}/.ssh
+if [ ! -d /home/"${user}"/.ssh ]; then
+    mkdir /home/"${user}"/.ssh
+    chown "${user}"."${user}" /home/"${user}"/.ssh
+    chmod 700 /home/"${user}"/.ssh
 fi
 #
-echo ${pubkey} >> /home/${user}/.ssh/authorized_keys
-chown ${user}.${user} /home/${user}/.ssh/authorized_keys
-chmod 640 /home/${user}/.ssh/authorized_keys
+echo "${pubkey}" >> /home/"${user}"/.ssh/authorized_keys
+chown "${user}"."${user}" /home/"${user}"/.ssh/authorized_keys
+chmod 640 /home/"${user}"/.ssh/authorized_keys
 #
 # lock out password access
-passwd -l ${user}
+passwd -l "${user}"
 #
 if [ ! -d /etc/sudoers.d ]; then
     echo "no sudoers.d folder. Something odd?"
@@ -132,7 +132,7 @@ fi
 # This you need if you want to use ony ${user} as account and you want
 # to run maintenance too.
 # In principle this lowers the security. But see later if you remove the pi user.
-echo "${user} ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/010_${user}-nopasswd
+echo "${user} ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/010_"${user}"-nopasswd
 #
 # some installs
 apt install ufw
@@ -140,7 +140,7 @@ apt install fail2ban
 #
 ufw allow ssh
 #
-# ross fingers ;)
+# cross fingers ;)
 ufw enable
 ufw status
 #
