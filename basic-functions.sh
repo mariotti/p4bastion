@@ -102,7 +102,7 @@ function setupsudo() {
 }
 #
 function setupufw() {
-    apt install ufw
+    apt -y install ufw
     ufw allow ssh
     # cross fingers ;)
     ufw enable
@@ -110,7 +110,7 @@ function setupufw() {
 }
 #
 function setupfail2ban() {
-    apt install fail2ban
+    apt -y install fail2ban
     echo "WARN: fail2ban installed but left inconfigured"
     # From this link: https://www.raspberrypi.org/documentation/configuration/security.md
     # You can get the set up for the fail2ban

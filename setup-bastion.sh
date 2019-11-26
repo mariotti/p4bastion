@@ -135,8 +135,8 @@ fi
 echo "${user} ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/010_"${user}"-nopasswd
 #
 # some installs
-apt install ufw
-apt install fail2ban
+apt -y install ufw
+apt -y install fail2ban
 #
 ufw allow ssh
 #
